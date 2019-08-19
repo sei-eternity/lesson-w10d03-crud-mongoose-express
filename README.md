@@ -1,4 +1,4 @@
-# CRUD App with Mongoose - Create and Read
+# CRUD Express App with Mongoose
 
 ## Lesson Objectives
 
@@ -7,11 +7,13 @@
 1. Connect Express to Mongo
 1. SEED DB
 1. Create INDEX
-1. Create CREATE Route 
+1. Create CREATE Route
 1. Create Fruits Model
 1. Have Create Route Create data in MongoDB
-1. Create Index Route
-1. Create Show Route
+1. INDEX Route
+1. SHOW Route
+1. DELETE Route
+1. UPDATE Route
 
 ## Initialize a directory
 
