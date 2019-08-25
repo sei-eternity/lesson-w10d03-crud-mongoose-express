@@ -99,12 +99,14 @@ Test the route in Postman. Note - you do not have to enter any for data for this
 
 ![](https://i.imgur.com/31PbefZ.png)
 
-#### Test form data with Postman
+#### Test JSON request data with Postman
 
-Next, we'll need to add some Express middleware to properly translate form data. Middleware is any code that we want to run between receiving the request and passing it along to the route. Typically, middleware is a `.use` method.
+Next, we'll need to add some Express middleware to properly translate JSON data. Middleware is any code that we want to run between receiving the request and passing it along to the route. Typically, middleware is a `.use` method. 
+
+[Body Parser](https://www.npmjs.com/package/body-parser) is an npm package that creates a `req.boody` object. It is now included in Express by default.
 
 ```javascript
-app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 ```
 
 Check to see if `req.body` works, update the route to respond with the body of the form.
@@ -115,9 +117,9 @@ app.post('/fruits', (req, res)=>{
 });
 ```
 
-In Postman, make sure that the Body is `x-www-form-urlencoded`. 
+In Postman, make sure that the Body is `raw` JSON. 
 
-![](https://i.imgur.com/J4w2jmc.png)
+![](https://i.imgur.com/sGfsHhy.png)
 
 
 Let's add some conditional logic based on whether a fruit is ripe and `readyToEat`. This will imitate a checkbox in a form:
@@ -133,7 +135,7 @@ app.post('/fruits', (req, res)=>{
 });
 ```
 
-![](https://i.imgur.com/SsDWb2T.png)
+![](https://i.imgur.com/EH1EhnJ.png)
 
 <br>
 
@@ -269,7 +271,7 @@ app.post('/fruits', (req, res)=>{
 });
 ```
 
-![](https://i.imgur.com/SJZdkSl.png)
+![](https://i.imgur.com/7lFtkTg.png)
 
 #### INDEX Route
 
@@ -321,7 +323,7 @@ app.put('/fruits/:id', (req, res)=>{
 });
 ```
 
-![](https://i.imgur.com/xtAgaC6.png)
+![](https://i.imgur.com/TUKzsE5.png)
 
 <br>
 
