@@ -252,12 +252,12 @@ app.get('/fruits/seed', (req, res) => {
 
 ## Use Mongoose to persist Data in MongoDB
 
-Inside `server.js`:
+Inside `server.js`.
+
+#### CREATE Route
 
 ```javascript
-const Fruit = require('./models/fruit.js');
-//... and then farther down the file
-app.post('/fruits/', (req, res)=>{
+app.post('/fruits', (req, res)=>{
     if(req.body.readyToEat === 'on'){ //if checked, req.body.readyToEat is set to 'on'
         req.body.readyToEat = true;
     } else { //if not checked, req.body.readyToEat is undefined
@@ -269,38 +269,44 @@ app.post('/fruits/', (req, res)=>{
 });
 ```
 
-## INDEX Route
+![](https://i.imgur.com/SJZdkSl.png)
+
+#### INDEX Route
 
 ```javascript
 app.get('/fruits', (req, res) => {
-  Fruit.find({}, (error, allFruits) => {
+  Fruit.find({}, (err, allFruits) => {
+    if (err) { console.log(err) }
     res.json(allFruits);
   });
 });
 ```
 
-
-## SHOW Route
+#### SHOW Route
 
 ```javascript
 app.get('/fruits/:id', (req, res)=>{
-    Fruit.findById(req.params.id, (err, foundFruit)=>{
-        res.json(foundFruit);
-    });
+  Fruit.findById(req.params.id, (err, foundFruit)=>{
+    if (err)  { res.send(err) }
+    res.json(foundFruit);
+  });
 });
 ```
 
-## DELETE Route
+![](https://i.imgur.com/4wg18Ki.png)
+
+#### DELETE Route
 
 ```javascript
 app.delete('/fruits/:id', (req, res)=>{
-    Fruit.findByIdAndRemove(req.params.id, (err, data)=>{
-        res.json(data);
-    });
+  Fruit.findByIdAndRemove(req.params.id, (err, deletedFruit)=>{
+	 if (err)  { console.log(err) }
+    res.json(deletedFruit);
+  });
 });
 ```
 
-## UPDATE Route
+#### UPDATE Route
 
 ```javascript
 app.put('/fruits/:id', (req, res)=>{
@@ -314,3 +320,11 @@ app.put('/fruits/:id', (req, res)=>{
     });
 });
 ```
+
+![](https://i.imgur.com/xtAgaC6.png)
+
+<br>
+
+## Additional Resources
+
+- [Mongoose Docs](https://mongoosejs.com/)
