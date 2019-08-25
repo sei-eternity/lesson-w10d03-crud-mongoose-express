@@ -15,6 +15,8 @@
 1. DELETE Route
 1. UPDATE Route
 
+<br>
+
 ## Initialize a directory
 
 1. `mkdir express-mongoose-crud-app`
@@ -22,6 +24,8 @@
 1. `npm install express`
 1. `touch server.js`
 1. Edit package.json to have `"main": "server.js",`
+
+<br>
 
 ## Build express app
 
@@ -79,6 +83,8 @@ app.get('/fruits/new', (req, res)=>{
 
 </details>
 
+<br>
+
 ## Test Fruit Route and `req.body`
 
 Let's build a POST route first. In `server.js` add this:
@@ -129,10 +135,12 @@ app.post('/fruits', (req, res)=>{
 
 ![](https://i.imgur.com/SsDWb2T.png)
 
+<br>
+
 ## Connect Express to Mongo
 
 1. `npm install mongoose`
-1. Inside server.js:
+1. Inside `server.js`:
 
 ```javascript
 const mongoose = require('mongoose');
@@ -144,53 +152,103 @@ mongoose.connection.once('open', ()=> {
 });
 ```
 
+<details>
+<summary>Our server.js so far</summary>
+	
+	
+```js
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+	
+app.use(express.urlencoded({ extended: true }));
+	
+mongoose.connect('mongodb://localhost:27017/basiccrud', { useNewUrlParser: true });
+mongoose.connection.once('open', () => {
+  console.log('connected to mongo');
+});
+	
+app.post('/fruits', (req, res) => {
+  if (req.body.readyToEat === 'on') { //if checked, req.body.readyToEat is set to 'on'
+    req.body.readyToEat = true;
+  } else { //if not checked, req.body.readyToEat is undefined
+    req.body.readyToEat = false;
+  }
+  res.json(req.body);
+});
+	
+app.listen(3000, () => {
+  console.log('listening');
+});
+```
+
+</details>
+
+<br>
+
+
 ## Create Fruits Model
 
 1. `mkdir models`
 1. `touch models/fruit.js`
 1. Create the fruit schema
 
-```javascript
-const mongoose = require('mongoose');
+	```javascript
+	const mongoose = require('mongoose');
+	
+	const fruitSchema = new mongoose.Schema({
+	    name:  { type: String, required: true },
+	    color:  { type: String, required: true },
+	    readyToEat: Boolean
+	});
+	
+	const Fruit = mongoose.model('Fruit', fruitSchema);
+	
+	module.exports = Fruit;
+	```
 
-const fruitSchema = new mongoose.Schema({
-    name:  { type: String, required: true },
-    color:  { type: String, required: true },
-    readyToEat: Boolean
-});
+1. Import `Fruit` into `server.js`
 
-const Fruit = mongoose.model('Fruit', fruitSchema);
+	```js
+	const mongoose = require('mongoose');
+	const Fruit = require('./models/fruit');
+	
+	```
 
-module.exports = Fruit;
-```
+<br>
 
 ## Create a Seed Route
 
-Sometimes you might need to add data to your database for testing purposes.  You can do so like this:
+Sometimes you might need to add data to your database for testing purposes.  You can do so like this via a route:
 
 ```javascript
-app.get('/fruits/seed', (req, res)=>{
-    Fruit.create([
-        {
-            name:'grapefruit',
-            color:'pink',
-            readyToEat:true
-        },
-        {
-            name:'grape',
-            color:'purple',
-            readyToEat:false
-        },
-        {
-            name:'avocado',
-            color:'green',
-            readyToEat:true
-        }
-    ], (err, data)=>{
-        res.redirect('/fruits');
-    })
+// FRUITS SEED ROUTE
+app.get('/fruits/seed', (req, res) => {
+  Fruit.insertMany([
+    {
+      name: 'grapefruit',
+      color: 'pink',
+      readyToEat: true
+    },
+    {
+      name: 'grape',
+      color: 'purple',
+      readyToEat: false
+    },
+    {
+      name: 'avocado',
+      color: 'green',
+      readyToEat: true
+    }
+  ], (err, fruits) => {
+    res.json(fruits);
+  })
 });
 ```
+
+![](https://i.imgur.com/K9oPPyI.png)
+
+<br>
 
 ## Use Mongoose to persist Data in MongoDB
 
