@@ -17,13 +17,15 @@
 
 ## Initialize a directory
 
-1. Create a directory for the app in `student_examples` and `cd` into it
+1. `mkdir express-mongoose-crud-app`
 1. `npm init`
 1. `npm install express`
 1. `touch server.js`
 1. Edit package.json to have `"main": "server.js",`
 
-## Start express
+## Build express app
+
+In `server.js`
 
 ```javascript
 const express = require('express');
@@ -79,38 +81,53 @@ app.get('/fruits/new', (req, res)=>{
 
 ## Test Fruit Route and `req.body`
 
+Let's build a POST route first. In `server.js` add this:
+
 ```javascript
-app.post('/fruits/', (req, res)=>{
+app.post('/fruits', (req, res)=>{
     res.send('received');
 });
 ```
 
-1. Use express.urlencoded in server.js:
+Test the route in Postman. Note - you do not have to enter any for data for this test.
+
+![](https://i.imgur.com/31PbefZ.png)
+
+#### Test form data with Postman
+
+Next, we'll need to add some Express middleware to properly translate form data. Middleware is any code that we want to run between receiving the request and passing it along to the route. Typically, middleware is a `.use` method.
 
 ```javascript
 app.use(express.urlencoded({extended:true}));
 ```
 
-Check to see if req.body works:
+Check to see if `req.body` works, update the route to respond with the body of the form.
 
 ```javascript
 app.post('/fruits', (req, res)=>{
-    res.send(req.body);
+    res.json(req.body);
 });
 ```
 
-Format data properly
+In Postman, make sure that the Body is `x-www-form-urlencoded`. 
+
+![](https://i.imgur.com/J4w2jmc.png)
+
+
+Let's add some conditional logic based on whether a fruit is ripe and `readyToEat`. This will imitate a checkbox in a form:
 
 ```javascript
-app.post('/fruits/', (req, res)=>{
+app.post('/fruits', (req, res)=>{
     if(req.body.readyToEat === 'on'){ //if checked, req.body.readyToEat is set to 'on'
         req.body.readyToEat = true;
     } else { //if not checked, req.body.readyToEat is undefined
         req.body.readyToEat = false;
     }
-    res.send(req.body);
+    res.json(req.body);
 });
 ```
+
+![](https://i.imgur.com/SsDWb2T.png)
 
 ## Connect Express to Mongo
 
