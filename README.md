@@ -39,50 +39,6 @@ app.listen(3000, () => {
     console.log('listening');
 });
 ```
-
-<details>
-<summary>New Fruit Form</summary>
-
-```javascript
-app.get('/fruits/new', (req, res)=>{
-    res.send('new');
-});
-```
-
-1. `mkdir views`
-1. `npm install ejs`
-1. `touch views/new.ejs`
-1. Create the view
-
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
-        <h1>New Fruit page</h1>
-        <form action="/fruits" method="POST">
-            Name: <input type="text" name="name" /><br/>
-            Color: <input type="text" name="color" /><br/>
-            Is Ready To Eat: <input type="checkbox" name="readyToEat" /><br/>
-            <input type="submit" name="" value="Create Fruit"/>
-        </form>
-    </body>
-</html>
-```
-
-Render the view
-
-```javascript
-app.get('/fruits/new', (req, res)=>{
-    res.render('new.ejs');
-});
-```
-
-</details>
-
 <br>
 
 ## Test Fruit Route and `req.body`
@@ -97,7 +53,7 @@ app.post('/fruits', (req, res)=>{
 
 Test the route in Postman. Note - you do not have to enter any for data for this test.
 
-![](https://i.imgur.com/31PbefZ.png)
+![](https://i.imgur.com/HRE6LmE.png)
 
 #### Test JSON request data with Postman
 
